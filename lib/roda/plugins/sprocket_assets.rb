@@ -9,8 +9,8 @@ class Roda
         sprockets:      Sprockets::Environment.new,
         precompile:     %w(app.js app.css *.png *.jpg *.svg *.eot *.ttf *.woff *.woff2),
         prefix:         %w(assets vendor/assets),
-        root:           Dir.pwd,
-        path:           -> { File.join(public_folder, 'assets') },
+        root:           false,
+        public_path:    false,
         path_prefix:    nil,
         protocol:       :http,
         css_compressor: nil,
@@ -30,6 +30,8 @@ class Roda
         opts = app.opts[:sprocket_assets].merge! plugin_opts
         DEFAULTS.each { |k, v| opts[k] = v unless opts.key?(k) }
 
+        %i(root public_path).each { |type| raise "#{type} needs to be set." unless opts[type] }
+
         opts[:prefix].each do |prefix|
           # Support absolute asset paths
           # https://github.com/kalasjocke/sinatra-asset-pipeline/pull/54
@@ -46,7 +48,6 @@ class Roda
           require 'opal/sprockets/processor'
 
           Opal.paths.each do |path|
-            puts path
             opts[:sprockets].append_path path
           end
         end
@@ -63,7 +64,7 @@ class Roda
           opts[:sprockets].js_compressor  = opts[:js_compressor] unless opts[:js_compressor].nil?
 
           Sprockets::Helpers.configure do |config|
-            config.manifest   = Sprockets::Manifest.new(opts[:sprockets], opts[:path])
+            config.manifest   = Sprockets::Manifest.new(opts[:sprockets], opts[:public_path])
             config.prefix     = opts[:path_prefix] unless opts[:path_prefix].nil?
             config.protocol   = opts[:protocol]
             config.asset_host = opts[:host] unless opts[:host].nil?
