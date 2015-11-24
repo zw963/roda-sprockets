@@ -17,6 +17,7 @@ class Roda
         js_compressor:  nil,
         host:           nil,
         digest:         true,
+        opal:           false,
         debug:          false
       }.freeze
 
@@ -38,6 +39,16 @@ class Roda
             Dir[File.join(opts[:root], prefix, '*')]
           end
           paths.each { |path| opts[:sprockets].append_path path }
+        end
+
+        if opts[:opal]
+          require 'opal/sprockets/server'
+          require 'opal/sprockets/processor'
+
+          Opal.paths.each do |path|
+            puts path
+            opts[:sprockets].append_path path
+          end
         end
 
         Sprockets::Helpers.configure do |config|
@@ -84,9 +95,12 @@ class Roda
         def sprocket_assets
           scope.class.configure :test, :development do
             get self.class.sprocket_assets_regexp do |path|
-              env_sprockets = scope.request.env.dup
-              env_sprockets['PATH_INFO']  = path
-              status, headers, response = scope.sprocket_assets_opts[:sprockets].call env_sprockets
+              opts                       = scope.sprocket_assets_opts
+              env_sprockets              = scope.request.env.dup
+              env_sprockets['PATH_INFO'] = path
+
+              status, headers, response = opts[:sprockets].call env_sprockets
+
               scope.response.status = status
               scope.response.headers.merge! headers
               response.is_a?(Array) ? response.join('\n') : response.to_s
