@@ -7,11 +7,10 @@ class Roda
     module SprocketAssets
       class Task < Rake::TaskLib
         def initialize(app_klass)
-          opts = app_klass.sprocket_assets_opts
-
           namespace :assets do
             desc "Precompile assets"
             task :precompile do
+              opts = app_klass.sprocket_assets_opts
               environment = opts[:sprockets]
               manifest = Sprockets::Manifest.new(environment.index, opts[:public_path])
               manifest.compile(opts[:precompile])
@@ -19,7 +18,7 @@ class Roda
 
             desc "Clean assets"
             task :clean do
-              FileUtils.rm_rf(opts[:public_path])
+              FileUtils.rm_rf(app_klass.sprocket_assets_opts[:public_path])
             end
           end
         end
