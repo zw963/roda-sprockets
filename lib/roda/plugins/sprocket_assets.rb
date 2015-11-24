@@ -5,8 +5,6 @@ require 'sprockets-helpers'
 class Roda
   module RodaPlugins
     module SprocketAssets
-      VERSION = '0.0.1'
-
       DEFAULTS = {
         sprockets:      Sprockets::Environment.new,
         precompile:     %w(app.js app.css *.png *.jpg *.svg *.eot *.ttf *.woff *.woff2),
@@ -32,7 +30,13 @@ class Roda
         DEFAULTS.each { |k, v| opts[k] = v unless opts.key?(k) }
 
         opts[:prefix].each do |prefix|
-          paths = Dir[File.join(opts[:root], prefix, '*')]
+          # Support absolute asset paths
+          # https://github.com/kalasjocke/sinatra-asset-pipeline/pull/54
+          paths = if Pathname.new(prefix).absolute?
+            Dir[File.join(prefix, '*')]
+          else
+            Dir[File.join(opts[:root], prefix, '*')]
+          end
           paths.each { |path| opts[:sprockets].append_path path }
         end
 
