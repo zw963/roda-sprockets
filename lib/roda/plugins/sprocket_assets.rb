@@ -46,6 +46,7 @@ class Roda
         if opts[:opal]
           require 'opal/sprockets/server'
           require 'opal/sprockets/processor'
+          require 'roda/plugins/sprockets_cache_key_fix'
 
           Opal.paths.each do |path|
             opts[:sprockets].append_path path
