@@ -95,18 +95,16 @@ class Roda
 
       module RequestMethods
         def sprocket_assets
-          scope.class.configure :test, :development do
-            get self.class.sprocket_assets_regexp do |path|
-              opts                       = scope.sprocket_assets_opts
-              env_sprockets              = scope.request.env.dup
-              env_sprockets['PATH_INFO'] = path
+          get self.class.sprocket_assets_regexp do |path|
+            opts                       = scope.sprocket_assets_opts
+            env_sprockets              = scope.request.env.dup
+            env_sprockets['PATH_INFO'] = path
 
-              status, headers, response = opts[:sprockets].call env_sprockets
+            status, headers, response = opts[:sprockets].call env_sprockets
 
-              scope.response.status = status
-              scope.response.headers.merge! headers
-              response.is_a?(Array) ? response.join('\n') : response.to_s
-            end
+            scope.response.status = status
+            scope.response.headers.merge! headers
+            response.is_a?(Array) ? response.join('\n') : response.to_s
           end
         end
       end
