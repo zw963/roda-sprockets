@@ -35,12 +35,23 @@ class Roda
         opts[:prefix].each do |prefix|
           # Support absolute asset paths
           # https://github.com/kalasjocke/sinatra-asset-pipeline/pull/54
-          paths = if Pathname.new(prefix).absolute?
-            Dir[File.join(prefix, '*')]
+          if prefix.last == '/'
+            paths = if Pathname.new(prefix).absolute?
+              Dir[File.join(prefix)]
+            else
+              Dir[File.join(opts[:root], prefix)]
+            end
           else
-            Dir[File.join(opts[:root], prefix, '*')]
+            paths = if Pathname.new(prefix).absolute?
+              Dir[File.join(prefix, '*')]
+            else
+              Dir[File.join(opts[:root], prefix, '*')]
+            end
           end
-          paths.each { |path| opts[:sprockets].append_path path }
+
+          paths.each do |path|
+            opts[:sprockets].append_path path
+          end
         end
 
         if opts[:opal]
