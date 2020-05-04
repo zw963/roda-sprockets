@@ -37,10 +37,10 @@ end
 ### Parameters for the plugin:
 
 * `precompile` - an array of files that you want to precompile
-* `prefix` (relative to the `root`, which is app.opts[:root] by default,
+* `prefix` (relative to the `root`, which is `app.opts[:root]` by default,
   but also supports absolute paths) - an array of directories where your
   assets are located, by default: `%w(assets vendor/assets)`.
-* `root` - a filesystem root directory of your app. By default, app.opts[:root].
+* `root` - a filesystem root directory of your app. By default, `app.opts[:root]`.
 * `public_path` - filesystem path to your `public` directory, for all your
   precompilation needs. (REQUIRED)
 * `path_prefix` - a Roda prefix of your assets directory. By default: `/assets`
