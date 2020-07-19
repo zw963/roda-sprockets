@@ -10,6 +10,7 @@ This release supports Roda 3.x and Sprockets 3.x (in the future, Sprockets 4.x t
 Add this line to your application's Gemfile:
 
 ```ruby
+gem 'sprockets-helpers', git: 'https://github.com/hmdne/sprockets-helpers'
 gem 'roda-sprockets', git: 'https://github.com/hmdne/roda-sprockets'
 ```
 
@@ -90,7 +91,7 @@ You will need to tell Opal to load this file. Add this in your template
 after everything has been loaded or somewhere else:
 
 ```html
-<script>Opal.require("site");</script>
+<%= opal_require 'site' %>
 ```
 
 Note that it won't be needed for plain Javascript use, only Opal needs that

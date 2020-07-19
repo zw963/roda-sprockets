@@ -71,23 +71,21 @@ class Roda
           end
         end
 
-        ::Sprockets::Helpers.configure do |config|
-          config.environment = options[:sprockets]
-          config.digest      = options[:digest]
-          config.prefix      = options[:path_prefix] unless options[:path_prefix].nil?
-          config.debug       = options[:debug]
-        end
+        options[:sprockets_helpers] = ::Sprockets::Helpers::Settings.new
+
+        options[:sprockets_helpers].environment = options[:sprockets]
+        options[:sprockets_helpers].digest      = options[:digest]
+        options[:sprockets_helpers].prefix      = options[:path_prefix] unless options[:path_prefix].nil?
+        options[:sprockets_helpers].debug       = options[:debug]
 
         app.configure :staging, :production do
           options[:sprockets].css_compressor = options[:css_compressor] unless options[:css_compressor].nil?
           options[:sprockets].js_compressor  = options[:js_compressor] unless options[:js_compressor].nil?
 
-          ::Sprockets::Helpers.configure do |config|
-            config.manifest   = Sprockets::Manifest.new(options[:sprockets], options[:public_path])
-            config.prefix     = options[:path_prefix] unless options[:path_prefix].nil?
-            config.protocol   = options[:protocol]
-            config.asset_host = options[:host] unless options[:host].nil?
-          end
+          options[:sprockets_helpers].manifest   = ::Sprockets::Manifest.new(options[:sprockets], options[:public_path])
+          options[:sprockets_helpers].prefix     = options[:path_prefix] unless options[:path_prefix].nil?
+          options[:sprockets_helpers].protocol   = options[:protocol]
+          options[:sprockets_helpers].asset_host = options[:host] unless options[:host].nil?
         end
       end
 
@@ -97,7 +95,7 @@ class Roda
         end
 
         def sprockets_regexp
-          %r{#{::Sprockets::Helpers.prefix[1..-1]}/(.*)}
+          %r{#{sprockets_options[:sprockets_helpers].prefix[1..-1]}/(.*)}
         end
       end
 
@@ -106,6 +104,22 @@ class Roda
 
         def sprockets_options
           self.class.sprockets_options
+        end
+
+        # Overload of Sprockets::Helpers#sprockets_helpers_settings to support polyinstantiation
+        def sprockets_helpers_settings
+          sprockets_options[:sprockets_helpers]
+        end
+
+        # Require Opal assets
+        def opal_require file
+          <<~END
+            <script>
+              Opal.loaded(typeof(OpalLoaded) === "undefined" ? [] : OpalLoaded);
+              Opal.require(#{file.to_json});
+            </script>
+          END
+          .gsub(/\s+/, ' ')
         end
       end
 
@@ -120,7 +134,7 @@ class Roda
 
             # Appease Rack::Lint
             if (300..399).include? status
-              headers.delete("Content-Type")
+              headers.delete("Content-type")
             end
 
             scope.response.status = status

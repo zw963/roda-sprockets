@@ -12,7 +12,7 @@ class Roda
             task :precompile do
               options = app_klass.sprockets_options
               environment = options[:sprockets]
-              manifest = Sprockets::Manifest.new(environment.index, options[:public_path])
+              manifest = ::Sprockets::Manifest.new(environment.index, options[:public_path])
               manifest.compile(options[:precompile])
             end
 
