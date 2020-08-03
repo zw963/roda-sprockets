@@ -18,7 +18,7 @@ class Roda
         host:           nil,
         digest:         true,
         opal:           false,
-        debug:          false
+        debug:          false,
       }.freeze
 
       def self.load_dependencies(app, _opts = nil)
@@ -83,7 +83,6 @@ class Roda
           options[:sprockets].js_compressor  = options[:js_compressor] unless options[:js_compressor].nil?
 
           options[:sprockets_helpers].manifest   = ::Sprockets::Manifest.new(options[:sprockets], options[:public_path])
-          options[:sprockets_helpers].prefix     = options[:path_prefix] unless options[:path_prefix].nil?
           options[:sprockets_helpers].protocol   = options[:protocol]
           options[:sprockets_helpers].asset_host = options[:host] unless options[:host].nil?
         end

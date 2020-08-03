@@ -3,7 +3,7 @@
 This Roda plugin provides support for integrating Sprockets with your Roda codebase.
 
 This is a fork of [roda-sprocket_assets](https://github.com/cj/roda-sprocket_assets).
-This release supports Roda 3.x and Sprockets 3.x (in the future, Sprockets 4.x too).
+This release supports Roda 3.x and Sprockets 3.x and 4.x.
 
 ## Installation
 
