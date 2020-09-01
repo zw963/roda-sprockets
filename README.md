@@ -10,8 +10,7 @@ This release supports Roda 3.x and Sprockets 3.x and 4.x.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'sprockets-helpers', git: 'https://github.com/hmdne/sprockets-helpers'
-gem 'roda-sprockets', git: 'https://github.com/hmdne/roda-sprockets'
+gem 'roda-sprockets'
 ```
 
 And then execute:
