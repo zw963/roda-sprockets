@@ -50,6 +50,7 @@ end
 * `digest` (bool) - digest your assets for unique filenames, default: true
 * `opal` (bool) - Opal support, default: false
 * `debug` (bool) - debug mode, default: false
+* `cache` - a `Sprockets::Cache` instance
 
 ### Templates:
 

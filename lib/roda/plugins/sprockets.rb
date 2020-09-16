@@ -19,6 +19,7 @@ class Roda
         digest:         true,
         opal:           false,
         debug:          false,
+        cache:          nil,
       }.freeze
 
       def self.load_dependencies(app, _opts = nil)
@@ -69,6 +70,10 @@ class Roda
           Opal.paths.each do |path|
             options[:sprockets].append_path path
           end
+        end
+
+        if options[:cache]
+          options[:sprockets].cache = options[:cache]
         end
 
         options[:sprockets_helpers] = ::Sprockets::Helpers::Settings.new
