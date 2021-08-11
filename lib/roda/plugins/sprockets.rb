@@ -125,7 +125,7 @@ class Roda
               Opal.require(#{file.to_json});
             </script>
           END
-          .gsub(/\s+/, ' ')
+          .gsub(/\s+/, ' ').chop
         end
       end
 
