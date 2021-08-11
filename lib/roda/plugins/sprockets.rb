@@ -35,7 +35,9 @@ class Roda
         options = app.opts[:sprockets].merge! plugin_options
         DEFAULTS.each { |k, v| options[k] = v unless options.key?(k) }
 
-        options[:root] = app.opts[:root] if !options[:root]
+        if !options[:root]
+          options[:root] = app.opts[:root] || Dir.pwd
+        end
 
         %i(root public_path).each { |type| raise "#{type} needs to be set." unless options[type] }
 
