@@ -24,6 +24,7 @@ GEM
     puma (5.4.0)
       nio4r (~> 2.0)
     rack (2.2.3)
+    rake (13.0.6)
     roda (3.46.0)
       rack
     sprockets (4.0.2)
@@ -39,6 +40,7 @@ PLATFORMS
 DEPENDENCIES
   opal-sprockets
   puma
+  rake
   roda-sprockets!
 
 BUNDLED WITH
