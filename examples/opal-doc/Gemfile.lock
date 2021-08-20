@@ -1,0 +1,45 @@
+PATH
+  remote: ../..
+  specs:
+    roda-sprockets (1.0.2)
+      roda (~> 3)
+      sprockets (>= 2.2)
+      sprockets-helpers (>= 1.4.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    ast (2.4.2)
+    concurrent-ruby (1.1.9)
+    nio4r (2.5.7)
+    opal (1.2.0)
+      ast (>= 2.3.0)
+      parser (~> 3.0)
+    opal-sprockets (1.0.1)
+      opal (>= 1.0, < 2.0)
+      sprockets (~> 4.0)
+      tilt (>= 1.4)
+    parser (3.0.2.0)
+      ast (~> 2.4.1)
+    puma (5.4.0)
+      nio4r (~> 2.0)
+    rack (2.2.3)
+    roda (3.46.0)
+      rack
+    sprockets (4.0.2)
+      concurrent-ruby (~> 1.0)
+      rack (> 1, < 3)
+    sprockets-helpers (1.4.0)
+      sprockets (>= 2.2)
+    tilt (2.0.10)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  opal-sprockets
+  puma
+  roda-sprockets!
+
+BUNDLED WITH
+   2.1.4
