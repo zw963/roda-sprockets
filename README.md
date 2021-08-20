@@ -22,7 +22,6 @@ And then execute:
 ```ruby
 class App < Roda
    plugin :sprockets, precompile: %w(site.js site.css),
-                      public_path: 'public/assets/',
                       opal: true,
                       debug: true
    plugin :public
@@ -51,7 +50,7 @@ end
 * `digest` (bool) - digest your assets for unique filenames, default: true
 * `opal` (bool) - Opal support, default: false
 * `debug` (bool) - debug mode, default: false
-* `cache` - a `Sprockets::Cache` instance
+* `cache` - a `Sprockets::Cache` instance, default: nil (no cache)
 
 ### Templates:
 
@@ -89,14 +88,38 @@ $document.body << DOM {
 ```
 
 You will need to tell Opal to load this file. Add this in your template
-after everything has been loaded or somewhere else:
+after everything has been loaded (after your `javascript_tag` call, it is
+needed too!):
 
-```html
+```erb
 <%= opal_require 'site' %>
 ```
 
 Note that it won't be needed for plain Javascript use, only Opal needs that
 line.
+
+### Caching:
+
+To speed up page loads during revelopment, you can enable cache. Be warned,
+there are some caveats with how Sprockets cache works. This will improve your
+experience, but be prepared for some rough edges.
+
+To enable memory cache, add an argument to your plugin config:
+
+```ruby
+cache: Sprockets::Cache::MemoryStore.new(65536)
+```
+
+To enable filesystem cache, for it to persist across application restarts,
+add an argument to your plugin config:
+
+```ruby
+cache: Sprockets::Cache::FileStore.new("var/cache/")
+```
+
+Remember: with filesystem cache problems may happen if you, for instance,
+update your Gems. You will then have to remove the cache for it to get
+repopulated.
 
 ### Rake precompilation tasks:
 
