@@ -138,15 +138,20 @@ class Roda
 
             status, headers, response = options[:sprockets].call env_sprockets
 
-            # Appease Rack::Lint
-            if (300..399).include? status
-              headers.delete("Content-type")
-            end
-
             scope.response.status = status
             scope.response.headers.merge! headers
 
-            response.is_a?(Array) ? response.join('\n') : response.to_s
+            case response
+            when nil, []
+              # Empty response happens for example when 304 Not Modified happens.
+              # We want to return nil in this case.
+              # (See: https://github.com/hmdne/roda-sprockets/issues/1)
+              nil
+            when Array
+              response.join("\n")
+            else
+              response.to_s
+            end
           end
         end
       end
