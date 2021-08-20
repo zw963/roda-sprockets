@@ -10,7 +10,7 @@ class Roda
         precompile:     %w(app.js app.css *.png *.jpg *.svg *.eot *.ttf *.woff *.woff2),
         prefix:         %w(assets vendor/assets),
         root:           false,
-        public_path:    false,
+        public_path:    "public/assets/",
         path_prefix:    "/assets",
         protocol:       :http,
         css_compressor: nil,
@@ -38,8 +38,6 @@ class Roda
         if !options[:root]
           options[:root] = app.opts[:root] || Dir.pwd
         end
-
-        %i(root public_path).each { |type| raise "#{type} needs to be set." unless options[type] }
 
         # opal-sprockets registers engines when required, but if we create Sprockets::Environment before
         # requiring that, they don't get registered

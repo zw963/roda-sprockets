@@ -41,8 +41,9 @@ end
   but also supports absolute paths) - an array of directories where your
   assets are located, by default: `%w(assets vendor/assets)`.
 * `root` - a filesystem root directory of your app. By default, `app.opts[:root]`.
-* `public_path` - filesystem path to your `public` directory, for all your
-  precompilation needs. (REQUIRED)
+* `public_path` - filesystem path to a place, where precompiled assets will be
+  stored, by default: `public/assets` (it should be a directory from which `:public`
+  plugin takes files + `path_prefix`)
 * `path_prefix` - a Roda prefix of your assets directory. By default: `/assets`
 * `protocol` - either :http (default) or :https.
 * `css_compressor`, `js_compressor` - pick a compressor of your choice.
