@@ -22,7 +22,7 @@ And then execute:
 ```ruby
 class App < Roda
    plugin :sprockets, precompile: %w(site.js site.css),
-                      public_path: 'public/',
+                      public_path: 'public/assets/',
                       opal: true,
                       debug: true
    plugin :public
