@@ -22,10 +22,6 @@ class Roda
         cache:          nil,
       }.freeze
 
-      def self.load_dependencies(app, _opts = nil)
-        app.plugin :environments
-      end
-
       def self.configure(app, plugin_options = {})
         if app.opts[:sprockets]
           app.opts[:sprockets].merge!(plugin_options)
@@ -83,7 +79,7 @@ class Roda
         options[:sprockets_helpers].prefix      = options[:path_prefix] unless options[:path_prefix].nil?
         options[:sprockets_helpers].debug       = options[:debug]
 
-        app.configure :staging, :production do
+        unless options[:debug]
           options[:sprockets].css_compressor = options[:css_compressor] unless options[:css_compressor].nil?
           options[:sprockets].js_compressor  = options[:js_compressor] unless options[:js_compressor].nil?
 

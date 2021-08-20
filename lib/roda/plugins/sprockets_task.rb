@@ -18,7 +18,11 @@ class Roda
         end
 
         def sprockets_options
-          @app_klass.sprockets_options
+          @opts ||= begin
+            opts = @app_klass.sprockets_options.dup
+            opts[:debug] = false
+            opts
+          end
         end
 
         def define
