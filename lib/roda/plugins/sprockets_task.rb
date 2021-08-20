@@ -5,20 +5,36 @@ require 'rake/sprocketstask'
 class Roda
   module RodaPlugins
     module Sprockets
-      class Task < Rake::TaskLib
+      class Task < Rake::SprocketsTask
         def initialize(app_klass)
+          @app_klass = app_klass
+          super() { update_values }
+        end
+
+        def update_values
+          @environment = sprockets_options[:sprockets]
+          @output = sprockets_options[:public_path]
+          @assets = sprockets_options[:precompile]
+        end
+
+        def sprockets_options
+          @app_klass.sprockets_options
+        end
+
+        def define
           namespace :assets do
             desc "Precompile assets"
             task :precompile do
-              options = app_klass.sprockets_options
-              environment = options[:sprockets]
-              manifest = ::Sprockets::Manifest.new(environment.index, options[:public_path])
-              manifest.compile(options[:precompile])
+              with_logger do
+                manifest.compile(assets)
+              end
             end
 
             desc "Clean assets"
             task :clean do
-              FileUtils.rm_rf(app_klass.sprockets_options[:public_path])
+              with_logger do
+                manifest.clobber
+              end
             end
           end
         end
