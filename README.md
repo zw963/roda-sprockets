@@ -29,7 +29,7 @@ class App < Roda
    route do |r|
      r.public
      r.sprockets
-   end     
+   end
 end
 ```
 
@@ -39,7 +39,8 @@ end
 * `prefix` (relative to the `root`, which is `app.opts[:root]` by default,
   but also supports absolute paths) - an array of directories where your
   assets are located, by default: `%w(assets vendor/assets)`.
-* `root` - a filesystem root directory of your app. By default, `app.opts[:root]`.
+* `root` - a filesystem root directory of your app. By default, same as
+  `app.opts[:root]`, that is: `Dir.pwd`.
 * `public_path` - filesystem path to a place, where precompiled assets will be
   stored, by default: `public/assets` (it should be a directory from which `:public`
   plugin takes files + `path_prefix`)
@@ -100,7 +101,7 @@ line.
 
 ### Caching:
 
-To speed up page loads during revelopment, you can enable cache. Be warned,
+To speed up page loads during development, you can enable cache. Be warned,
 there are some caveats with how Sprockets cache works. This will improve your
 experience, but be prepared for some rough edges.
 
